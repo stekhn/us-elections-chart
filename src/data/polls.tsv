@@ -1,0 +1,201 @@
+year	month	candidate	party	result
+1936	1	Franklin Roosevelt	D	49
+1936	1	Alfred Landon	R	45
+1936	2	Franklin Roosevelt	D	49
+1936	2	Alfred Landon	R	44
+1936	3	Franklin Roosevelt	D	50
+1936	3	Alfred Landon	R	44
+1936	4	Franklin Roosevelt	D	56
+1936	4	Alfred Landon	R	44
+1936	5	Franklin Roosevelt	D	61
+1936	5	Alfred Landon	R	37
+1940	1	Franklin Roosevelt	D	44
+1940	1	Wendell Willkie	R	43
+1940	2	Franklin Roosevelt	D	46
+1940	2	Wendell Willkie	R	44
+1940	3	Franklin Roosevelt	D	49
+1940	3	Wendell Willkie	R	40
+1940	4	Franklin Roosevelt	D	52
+1940	4	Wendell Willkie	R	48
+1940	5	Franklin Roosevelt	D	55
+1940	5	Wendell Willkie	R	45
+1944	1	Franklin Roosevelt	D	49
+1944	1	Thomas Dewey	R	41
+1944	2	Franklin Roosevelt	D	47
+1944	2	Thomas Dewey	R	45
+1944	3	Franklin Roosevelt	D	47
+1944	3	Thomas Dewey	R	45
+1944	4	Franklin Roosevelt	D	51
+1944	4	Thomas Dewey	R	48
+1944	5	Franklin Roosevelt	D	53
+1944	5	Thomas Dewey	R	46
+1948	1	Harry Truman	D	37
+1948	1	Thomas Dewey	R	48
+1948	2	Harry Truman	D	37
+1948	2	Thomas Dewey	R	48
+1948	3	Harry Truman	D	40
+1948	3	Thomas Dewey	R	46
+1948	4	Harry Truman	D	45
+1948	4	Thomas Dewey	R	50
+1948	5	Harry Truman	D	50
+1948	5	Thomas Dewey	R	45
+1952	1	Dwight Eisenhower	R	50
+1952	1	Adlai Stevenson	D	43
+1952	2	Dwight Eisenhower	R	50
+1952	2	Adlai Stevenson	D	43
+1952	3	Dwight Eisenhower	R	55
+1952	3	Adlai Stevenson	D	41
+1952	4	Dwight Eisenhower	R	51
+1952	4	Adlai Stevenson	D	49
+1952	5	Dwight Eisenhower	R	55
+1952	5	Adlai Stevenson	D	44
+1956	1	Dwight Eisenhower	R	61
+1956	1	Adlai Stevenson	D	37
+1956	2	Dwight Eisenhower	R	52
+1956	2	Adlai Stevenson	D	41
+1956	3	Dwight Eisenhower	R	52
+1956	3	Adlai Stevenson	D	40
+1956	4	Dwight Eisenhower	R	59
+1956	4	Adlai Stevenson	D	40
+1956	5	Dwight Eisenhower	R	57
+1956	5	Adlai Stevenson	D	42
+1960	1	John F. Kennedy	D	50
+1960	1	Richard Nixon	R	46
+1960	2	John F. Kennedy	D	44
+1960	2	Richard Nixon	R	50
+1960	3	John F. Kennedy	D	46
+1960	3	Richard Nixon	R	47
+1960	4	John F. Kennedy	D	51
+1960	4	Richard Nixon	R	49
+1960	5	John F. Kennedy	D	50
+1960	5	Richard Nixon	R	50
+1964	1	Lyndon B. Johnson	D	59
+1964	1	Barry Goldwater	R	31
+1964	2	Lyndon B. Johnson	D	65
+1964	2	Barry Goldwater	R	29
+1964	3	Lyndon B. Johnson	D	62
+1964	3	Barry Goldwater	R	32
+1964	4	Lyndon B. Johnson	D	64
+1964	4	Barry Goldwater	R	36
+1964	5	Lyndon B. Johnson	D	61
+1964	5	Barry Goldwater	R	38
+1968	1	Richard Nixon	R	40
+1968	1	Hubert Humphrey	D	38
+1968	2	Richard Nixon	R	45
+1968	2	Hubert Humphrey	D	29
+1968	3	Richard Nixon	R	44
+1968	3	Hubert Humphrey	D	36
+1968	4	Richard Nixon	R	43
+1968	4	Hubert Humphrey	D	42
+1968	5	Richard Nixon	R	43
+1968	5	Hubert Humphrey	D	43
+1972	1	Richard Nixon	R	56
+1972	1	George McGovern	D	37
+1972	2	Richard Nixon	R	64
+1972	2	George McGovern	D	30
+1972	3	Richard Nixon	R	61
+1972	3	George McGovern	D	33
+1972	4	Richard Nixon	R	59
+1972	4	George McGovern	D	36
+1972	5	Richard Nixon	R	62
+1972	5	George McGovern	D	38
+1976	1	Jimmy Carter	D	62
+1976	1	Gerald Ford	R	29
+1976	2	Jimmy Carter	D	51
+1976	2	Gerald Ford	R	36
+1976	3	Jimmy Carter	D	51
+1976	3	Gerald Ford	R	40
+1976	4	Jimmy Carter	D	48
+1976	4	Gerald Ford	R	49
+1976	5	Jimmy Carter	D	50
+1976	5	Gerald Ford	R	48
+1980	1	Ronald Reagan	R	37
+1980	1	Jimmy Carter	D	34
+1980	2	Ronald Reagan	R	39
+1980	2	Jimmy Carter	D	39
+1980	3	Ronald Reagan	R	40
+1980	3	Jimmy Carter	D	44
+1980	4	Ronald Reagan	R	47
+1980	4	Jimmy Carter	D	44
+1980	5	Ronald Reagan	R	51
+1980	5	Jimmy Carter	D	41
+1984	1	Ronald Reagan	R	51
+1984	1	Walter Mondale	D	41
+1984	2	Ronald Reagan	R	55
+1984	2	Walter Mondale	D	39
+1984	3	Ronald Reagan	R	55
+1984	3	Walter Mondale	D	39
+1984	4	Ronald Reagan	R	58
+1984	4	Walter Mondale	D	38
+1984	5	Ronald Reagan	R	59
+1984	5	Walter Mondale	D	41
+1988	1	George H. W. Bush	R	42
+1988	1	Michael Dukakis	D	49
+1988	2	George H. W. Bush	R	47
+1988	2	Michael Dukakis	D	42
+1988	3	George H. W. Bush	R	50
+1988	3	Michael Dukakis	D	40
+1988	4	George H. W. Bush	R	56
+1988	4	Michael Dukakis	D	44
+1988	5	George H. W. Bush	R	53
+1988	5	Michael Dukakis	D	46
+1992	1	Bill Clinton	D	52
+1992	1	George H. W. Bush	R	42
+1992	2	Bill Clinton	D	51
+1992	2	George H. W. Bush	R	35
+1992	3	Bill Clinton	D	43
+1992	3	George H. W. Bush	R	36
+1992	4	Bill Clinton	D	49
+1992	4	George H. W. Bush	R	37
+1992	5	Bill Clinton	D	43
+1992	5	George H. W. Bush	R	37
+1996	1	Bill Clinton	D	55
+1996	1	Bob Dole	R	34
+1996	2	Bill Clinton	D	57
+1996	2	Bob Dole	R	32
+1996	3	Bill Clinton	D	50
+1996	3	Bob Dole	R	37
+1996	4	Bill Clinton	D	52
+1996	4	Bob Dole	R	41
+1996	5	Bill Clinton	D	49
+1996	5	Bob Dole	R	41
+2000	1	George W. Bush	R	46
+2000	1	Al Gore	D	45
+2000	2	George W. Bush	R	45
+2000	2	Al Gore	D	45
+2000	3	George W. Bush	R	47
+2000	3	Al Gore	D	37
+2000	4	George W. Bush	R	48
+2000	4	Al Gore	D	47
+2000	5	George W. Bush	R	48
+2000	5	Al Gore	D	48
+2004	1	George W. Bush	R	51
+2004	1	John Kerry	D	45
+2004	2	George W. Bush	R	48
+2004	2	John Kerry	D	46
+2004	3	George W. Bush	R	52
+2004	3	John Kerry	D	44
+2004	4	George W. Bush	R	49
+2004	4	John Kerry	D	49
+2004	5	George W. Bush	R	51
+2004	5	John Kerry	D	48
+2008	1	Barack Obama 	D	44
+2008	1	John McCain	R	44
+2008	2	Barack Obama 	D	50
+2008	2	John McCain	R	52
+2008	3	Barack Obama 	D	46
+2008	3	John McCain	R	46
+2008	4	Barack Obama 	D	53
+2008	4	John McCain	R	42
+2008	5	Barack Obama 	D	53
+2008	5	John McCain	R	46
+2012	1	Barack Obama	D	47
+2012	1	Mitt Romney	R	46
+2012	2	Barack Obama	D	50
+2012	2	Mitt Romney	R	44
+2012	3	Barack Obama	D	48
+2012	3	Mitt Romney	R	47
+2012	4	Barack Obama	D	49
+2012	4	Mitt Romney	R	46
+2012	5	Barack Obama	D	51
+2012	5	Mitt Romney	R	47
