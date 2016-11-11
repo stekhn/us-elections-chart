@@ -200,6 +200,7 @@
 
     function getParty (d) {
 
+      console.log(d.values[0]);
       return d.values[0].party.toLowerCase();
     }
 
