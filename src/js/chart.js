@@ -52,16 +52,11 @@
 
     var circle = null;
     var caption = null;
-    var curYear = null;
-
-    var bisect = d3.bisector(function (d) {
-
-      return d.month;
-    }).left;
 
     var xScale = d3.scale.linear()
       .range([0, width])
       .domain([1, 5]);
+
     var yScale = d3.scale.linear()
       .range([height, 0])
       .domain([0, 100]);
@@ -76,7 +71,7 @@
       .tickFormat(function (d) { return d + '%'; });
 
     var line = d3.svg.line()
-      .interpolate('cardinal')
+      // .interpolate('cardinal')
       .x(function (d) { return xScale(d.month); })
       .y(function (d) { return yScale(d.result); });
 
@@ -100,53 +95,61 @@
         var g = svg.select('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+        g.append('rect')
+          .attr('class', 'background')
+          .style('pointer-events', 'all')
+          .attr('width', width + margin.right)
+          .attr('height', height)
+          .on('mouseover', mouseover)
+          .on('mousemove', mousemove)
+          .on('mouseout', mouseout);
+
         g.append('g')
           .attr('class', 'y axis')
           .call(yAxis);
 
         g.append('text')
-          .attr('class', 'title')
+          .attr('class', 'year')
           .attr('text-anchor', 'middle')
           .attr('y', height)
           .attr('dy', margin.bottom / 2 + 5)
           .attr('x', width / 2)
           .attr('font-weight', 'bold')
-          .text(function (c) { return c.key; });
+          .text(function (d) { return d.key; });
 
         var lines = g.selectAll('.lines')
-          .data(function (c) { return c.values; })
+          .style('pointer-events', 'none')
+          .data(function (d) { return d.values; })
           .enter()
           .append('g')
             .attr('class', 'lines');
 
         lines.append('path')
-          .attr('class', function (c) {
+          .style('pointer-events', 'none')
+          .attr('class', getParty)
+          .classed('line', true)
+          .attr('d', function (d) { return line(d.values); });
 
-            return 'line ' + c.values[0].party.toLowerCase();
-          })
-          .attr('d', function (c) { return line(c.values); })
-          .style('pointer-events', 'none');
-
-        var circle = lines.append('circle')
-          .attr('class', function (c) {
-
-            return c.values[0].party.toLowerCase();
-          })
-          .attr('cx', function (c) { return xScale(c.values[4].month); })
-          .attr('cy', function (c) { return yScale(c.values[4].result); })
+        lines.append('circle')
+          .style('pointer-events', 'none')
+          .attr('class', getParty)
+          .attr('cx', function (d) { return xScale(d.values[4].month); })
+          .attr('cy', function (d) { return yScale(d.values[4].result); })
           .attr('r', 3.5);
 
-        var result = lines.append('text')
+        lines.append('text')
+          .style('pointer-events', 'none')
           .attr('text-anchor', 'end')
-          .attr('x', function (c) { return xScale(c.values[4].month); })
-          .attr('y', function (c) { return yScale(c.values[4].result); })
+          .attr('x', function (d) { return xScale(d.values[4].month); })
+          .attr('y', function (d) { return yScale(d.values[4].result); })
           .attr('dx', 5)
-          .attr('dy', function (c, i) {
+          .attr('dy', function (d, i) {
             return i ? 17 : -10;
           })
-          .text(function (c) {
+          .attr('font-weight', 'bold')
+          .text(function (d) {
 
-            var delta = c.values[4].result - c.values[3].result;
+            var delta = d.values[4].result - d.values[3].result;
             if (delta > 0) { delta = '+' + delta; }
             return delta + '%';
           });
@@ -155,19 +158,84 @@
           .attr('class', 'legend');
 
         legend.append('text')
-          .attr('class', function (c) {
-
-            return c.values[0].party.toLowerCase();
-          })
+          .style('pointer-events', 'none')
+          .attr('class', getParty)
           .attr('x', 5)
           .attr('dy', 3)
-          .attr('y', function (c, i) {
-            return i * 12;
-          })
-          .text(function (c) {
-            return c.key;
-          });
+          .attr('y', function (d, i) { return i * 12; })
+          .text(function (d, i) { return d.key + (i ? '' : ' ★' ); });
+
+        lines.append('text')
+          .style('pointer-events', 'none')
+          .attr('class', 'value')
+          .attr('text-anchor', 'end')
+          .attr('dy', 13)
+          .attr('y', height)
+          .attr('x', width);
+
+        circle = lines.append('circle')
+          .attr('class', getParty)
+          .attr('r', 2.2)
+          .style('pointer-events', 'none');
+
+        caption = lines.append('text')
+          .style('pointer-events', 'none')
+          .classed('caption', true)
+          .attr('class', getParty)
+          .attr('text-anchor', 'middle')
+          .attr('dy', function (d, i) { return i ? 17 : -10; });
       });
+    }
+
+    function mouseover() {
+
+      circle.attr('opacity', 1.0);
+      d3.selectAll('.value')
+        .classed('hidden', true);
+
+      return mousemove.call(this);
+    }
+
+    function mousemove() {
+
+      var month = xScale.invert(d3.mouse(this)[0]);
+      var index = Math.min(Math.round(month) - 1, 4);
+
+      circle
+        .attr('cx', function (d) {
+
+          return xScale(d.values[index].month);
+        })
+        .attr('cy', function (d) {
+
+          return yScale(d.values[index].result);
+        });
+
+      caption
+        .attr('x', function (d) {
+
+          return xScale(d.values[index].month);
+        })
+        .attr('y', function (d) {
+
+          return yScale(d.values[index].result);
+        })
+        .text(function (d) {
+
+          return d.values[index].result + '%';
+        });
+    }
+
+    function mouseout() {
+
+      d3.selectAll('.static_year').classed('hidden', false);
+      circle.attr('opacity', 0);
+      caption.text('');
+    }
+
+    function getParty (d) {
+
+      return d.values[0].party.toLowerCase();
     }
 
     return chart;
