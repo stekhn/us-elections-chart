@@ -151,14 +151,15 @@
 
         result.append('text')
           .style('pointer-events', 'none')
+          .attr('class', getParty)
           .attr('text-anchor', 'end')
+          .attr('font-weight', 'bold')
           .attr('x', function (d) { return xScale(d.values[4].month); })
           .attr('y', function (d) { return yScale(d.values[4].result); })
           .attr('dx', 5)
           .attr('dy', function (d, i) {
             return i ? 17 : -10;
           })
-          .attr('font-weight', 'bold')
           .text(function (d) {
 
             var delta = d.values[4].result - d.values[3].result;
@@ -200,7 +201,6 @@
 
     function getParty (d) {
 
-      console.log(d.values[0]);
       return d.values[0].party.toLowerCase();
     }
 
