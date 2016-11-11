@@ -9,11 +9,17 @@ html {
 body {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 12px;
+  margin: 5px;
+}
+
+#vis {
+  max-width: 1170px;
 }
 
 .chart {
   display: inline-block;
-  padding: 0 5px 5px 0;
+  padding: 0 10px 10px 0;
+  width: 20%;
 }
 
 svg {
@@ -50,6 +56,10 @@ text.d, circle.d {
   font-size: 12px;
 }
 
+.legend text {
+  font-size: 12px;
+}
+
 .axis line {
   stroke-width: .5px;
   shape-rendering: crispEdges;
@@ -62,7 +72,36 @@ text.d, circle.d {
   display: none;
 }
 
-.hidden {
-  display:none;
-  opacity: 0.0;
+.footer {
+  padding: 10px 5px;
 }
+
+@media all and (max-width: 1170px) {
+
+  .chart {
+    width: 25%;
+  }
+}
+
+@media all and (max-width: 940px) {
+
+  .chart {
+    width: 33%;
+  }
+}
+
+@media all and (max-width: 700px) {
+
+  .chart {
+    width: 50%;
+  }
+}
+
+@media all and (max-width: 455px) {
+
+  .chart {
+    width: 100%;
+  }
+}
+
+

@@ -58,10 +58,10 @@
     width = 150;
     height = 120;
     margin = {
-      top: 15,
-      right: 10,
-      bottom: 40,
-      left: 35
+      top: 20,
+      right: 30,
+      bottom: 20,
+      left: 40
     };
 
     xScale = d3.scale.linear()
@@ -90,7 +90,7 @@
 
       return selection.each(function (data) {
 
-        var div, svg, defs, filter, group, lines, result, legend;
+        var div, svg, group, lines, result, legend;
 
         div = d3.select(this).selectAll('.chart')
           .data(data);
@@ -105,20 +105,6 @@
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom);
 
-        defs = svg.append('defs');
-
-        filter = defs.append('filter')
-          .attr('id', 'background')
-          .attr('x', '-25%')
-          .attr('height', 1.2)
-          .attr('width', 1.4);
-
-        filter.append('feFlood')
-            .attr('flood-color', 'white');
-
-        filter.append('feComposite')
-            .attr('in', 'SourceGraphic');
-
         group = svg.select('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -126,13 +112,13 @@
           .attr('class', 'background')
           .style('pointer-events', 'all')
           .attr('width', width + margin.right)
-          .attr('height', height)
+          .attr('height', height);
 
         group.append('text')
           .attr('class', 'year')
           .attr('text-anchor', 'middle')
           .attr('y', height)
-          .attr('dy', margin.bottom / 2 + 5)
+          .attr('dy', margin.bottom / 2)
           .attr('x', width / 2)
           .attr('font-weight', 'bold')
           .text(function (d) { return d.key; });
@@ -186,8 +172,8 @@
         legend.append('text')
           .attr('class', getParty)
           .attr('x', 5)
-          .attr('dy', 3)
-          .attr('y', function (d, i) { return i * 12; })
+          .attr('dy', 5)
+          .attr('y', function (d, i) { return i * 14; })
           .text(function (d, i) { return d.key + (i ? '' : ' ★' ); });
 
         marker = lines.append('g')
@@ -205,7 +191,6 @@
           .attr('class', getParty)
           .attr('text-anchor', 'middle')
           .attr('font-weight', 'bold')
-          .attr('filter', 'url(#background)')
           .attr('x', function (d) { return xScale(d.values[3].month); })
           .attr('y', function (d) { return yScale(d.values[3].result); })
           .attr('dy', function (d) { return d.values[3].upper ? -10 : 17; })
