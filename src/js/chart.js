@@ -21,47 +21,58 @@
 
   function transform(data) {
 
-    data.forEach(function (d) {
+    var nested;
+
+    data.forEach(function (d, i) {
+
+      if (i % 2 === 0) {
+        if (data[i].result >= data[i + 1].result) {
+
+          data[i].upper = true;
+          data[i + 1].upper = false;
+        } else {
+
+          data[i + 1].upper = true;
+          data[i].upper = false;
+        }
+      }
 
       d.month = parseInt(d.month);
       d.result = parseInt(d.result);
     });
 
-    var nest = d3.nest()
+    nested = d3.nest()
       .key(function (d) { return d.year; })
       .key(function (d) { return d.candidate; })
-      .sortValues(function(a, b) {
-
-        return d3.ascending(a.month, b.month);
-      })
+      .sortValues(function(a, b) { return d3.ascending(a.month, b.month); })
       .entries(data);
 
-    return nest;
+    return nested;
   }
 
   function draw() {
 
-    var width = 150;
-    var height = 120;
-    var margin = {
+    var width, height, margin, marker,
+      xScale, yScale, yAxis, line;
+
+    width = 150;
+    height = 120;
+    margin = {
       top: 15,
       right: 10,
       bottom: 40,
       left: 35
     };
 
-    var circle = null;
-    var caption = null;
-
-    var xScale = d3.scale.linear()
+    xScale = d3.scale.linear()
       .range([0, width])
       .domain([1, 5]);
 
-    var yScale = d3.scale.linear()
+    yScale = d3.scale.linear()
       .range([height, 0])
       .domain([0, 100]);
 
-    var yAxis = d3.svg.axis()
+    yAxis = d3.svg.axis()
       .scale(yScale)
       .orient('left')
       .ticks(4)
@@ -70,8 +81,8 @@
       .tickSize(-width)
       .tickFormat(function (d) { return d + '%'; });
 
-    var line = d3.svg.line()
-      // .interpolate('cardinal')
+    line = d3.svg.line()
+      .interpolate('cardinal')
       .x(function (d) { return xScale(d.month); })
       .y(function (d) { return yScale(d.result); });
 
@@ -79,7 +90,9 @@
 
       return selection.each(function (data) {
 
-        var div = d3.select(this).selectAll('.chart')
+        var div, svg, defs, filter, group, lines, result, legend;
+
+        div = d3.select(this).selectAll('.chart')
           .data(data);
 
         div.enter()
@@ -88,14 +101,28 @@
           .append('svg')
           .append('g');
 
-        var svg = div.select('svg')
+        svg = div.select('svg')
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom);
 
-        var g = svg.select('g')
+        defs = svg.append('defs');
+
+        filter = defs.append('filter')
+          .attr('id', 'background')
+          .attr('x', '-25%')
+          .attr('height', 1.2)
+          .attr('width', 1.4);
+
+        filter.append('feFlood')
+            .attr('flood-color', 'white');
+
+        filter.append('feComposite')
+            .attr('in', 'SourceGraphic');
+
+        group = svg.select('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-        g.append('rect')
+        group.append('rect')
           .attr('class', 'background')
           .style('pointer-events', 'all')
           .attr('width', width + margin.right)
@@ -104,11 +131,7 @@
           .on('mousemove', mousemove)
           .on('mouseout', mouseout);
 
-        g.append('g')
-          .attr('class', 'y axis')
-          .call(yAxis);
-
-        g.append('text')
+        group.append('text')
           .attr('class', 'year')
           .attr('text-anchor', 'middle')
           .attr('y', height)
@@ -117,27 +140,33 @@
           .attr('font-weight', 'bold')
           .text(function (d) { return d.key; });
 
-        var lines = g.selectAll('.lines')
+        group.append('g')
+          .attr('class', 'y axis')
+          .call(yAxis);
+
+        lines = group.selectAll('.line')
           .style('pointer-events', 'none')
           .data(function (d) { return d.values; })
           .enter()
           .append('g')
-            .attr('class', 'lines');
+            .attr('class', 'line');
 
         lines.append('path')
           .style('pointer-events', 'none')
           .attr('class', getParty)
-          .classed('line', true)
           .attr('d', function (d) { return line(d.values); });
 
-        lines.append('circle')
+        result = lines.append('g')
+          .classed('result', true);
+
+        result.append('circle')
           .style('pointer-events', 'none')
           .attr('class', getParty)
           .attr('cx', function (d) { return xScale(d.values[4].month); })
           .attr('cy', function (d) { return yScale(d.values[4].result); })
           .attr('r', 3.5);
 
-        lines.append('text')
+        result.append('text')
           .style('pointer-events', 'none')
           .attr('text-anchor', 'end')
           .attr('x', function (d) { return xScale(d.values[4].month); })
@@ -154,7 +183,7 @@
             return delta + '%';
           });
 
-        var legend = lines.append('g')
+        legend = lines.append('g')
           .attr('class', 'legend');
 
         legend.append('text')
@@ -165,43 +194,39 @@
           .attr('y', function (d, i) { return i * 12; })
           .text(function (d, i) { return d.key + (i ? '' : ' ★' ); });
 
-        lines.append('text')
-          .style('pointer-events', 'none')
-          .attr('class', 'value')
-          .attr('text-anchor', 'end')
-          .attr('dy', 13)
-          .attr('y', height)
-          .attr('x', width);
+        marker = lines.append('g')
+          .classed('marker', true)
+          .attr('opacity', 0);
 
-        circle = lines.append('circle')
+        marker.append('circle')
+          .style('pointer-events', 'none')
           .attr('class', getParty)
-          .attr('r', 2.2)
-          .style('pointer-events', 'none');
+          .attr('r', 2.2);
 
-        caption = lines.append('text')
+        marker.append('text')
           .style('pointer-events', 'none')
-          .classed('caption', true)
           .attr('class', getParty)
           .attr('text-anchor', 'middle')
-          .attr('dy', function (d, i) { return i ? 17 : -10; });
+          .attr('filter', 'url(#background)')
+          .attr('font-weight', 'bold');
       });
     }
 
     function mouseover() {
 
-      circle.attr('opacity', 1.0);
-      d3.selectAll('.value')
-        .classed('hidden', true);
+      marker.attr('opacity', 1);
 
       return mousemove.call(this);
     }
 
     function mousemove() {
 
-      var month = xScale.invert(d3.mouse(this)[0]);
-      var index = Math.min(Math.round(month) - 1, 4);
+      var month, index;
 
-      circle
+      month = xScale.invert(d3.mouse(this)[0]);
+      index = Math.min(Math.round(month) - 1, 4);
+
+      marker.selectAll('circle')
         .attr('cx', function (d) {
 
           return xScale(d.values[index].month);
@@ -211,7 +236,7 @@
           return yScale(d.values[index].result);
         });
 
-      caption
+      marker.selectAll('text')
         .attr('x', function (d) {
 
           return xScale(d.values[index].month);
@@ -219,6 +244,10 @@
         .attr('y', function (d) {
 
           return yScale(d.values[index].result);
+        })
+        .attr('dy', function (d) {
+
+          return d.values[index].upper ? -10 : 17;
         })
         .text(function (d) {
 
@@ -228,9 +257,9 @@
 
     function mouseout() {
 
-      d3.selectAll('.static_year').classed('hidden', false);
-      circle.attr('opacity', 0);
-      caption.text('');
+      marker.attr('opacity', 0);
+      marker.selectAll('text')
+        .text('');
     }
 
     function getParty (d) {

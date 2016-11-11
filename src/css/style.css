@@ -8,6 +8,7 @@ html {
 
 body {
   font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
 }
 
 .chart {
@@ -23,17 +24,17 @@ svg {
   fill: none;
 }
 
-.line {
+.line path {
   fill: none;
   stroke: #889;
   stroke-width: 1.5px;
 }
 
-.line.r {
+.line path.r {
   stroke: #dc5147;
 }
 
-.line.d {
+.line path.d {
   stroke: #3579a8;
 }
 
@@ -45,13 +46,8 @@ text.d, circle.d {
   fill: #3579a8;
 }
 
-.title {
+.year {
   font-size: 12px;
-}
-
-.caption {
-  -webkit-filter: drop-shadow( -5px -5px 5px #000 );
-  filter: drop-shadow( -5px -5px 5px #000 );
 }
 
 .axis line {
