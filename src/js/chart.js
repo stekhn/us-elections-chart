@@ -127,9 +127,6 @@
           .style('pointer-events', 'all')
           .attr('width', width + margin.right)
           .attr('height', height)
-          .on('mouseover', mouseover)
-          .on('mousemove', mousemove)
-          .on('mouseout', mouseout);
 
         group.append('text')
           .attr('class', 'year')
@@ -187,7 +184,6 @@
           .attr('class', 'legend');
 
         legend.append('text')
-          .style('pointer-events', 'none')
           .attr('class', getParty)
           .attr('x', 5)
           .attr('dy', 3)
@@ -195,71 +191,26 @@
           .text(function (d, i) { return d.key + (i ? '' : ' ★' ); });
 
         marker = lines.append('g')
-          .classed('marker', true)
-          .attr('opacity', 0);
+          .classed('marker', true);
 
         marker.append('circle')
           .style('pointer-events', 'none')
           .attr('class', getParty)
-          .attr('r', 2.2);
+          .attr('r', 2.2)
+          .attr('cx', function (d) { return xScale(d.values[3].month); })
+          .attr('cy', function (d) { return yScale(d.values[3].result); });
 
         marker.append('text')
           .style('pointer-events', 'none')
           .attr('class', getParty)
           .attr('text-anchor', 'middle')
+          .attr('font-weight', 'bold')
           .attr('filter', 'url(#background)')
-          .attr('font-weight', 'bold');
+          .attr('x', function (d) { return xScale(d.values[3].month); })
+          .attr('y', function (d) { return yScale(d.values[3].result); })
+          .attr('dy', function (d) { return d.values[3].upper ? -10 : 17; })
+          .text(function (d) { return d.values[3].result + '%'; });
       });
-    }
-
-    function mouseover() {
-
-      marker.attr('opacity', 1);
-
-      return mousemove.call(this);
-    }
-
-    function mousemove() {
-
-      var month, index;
-
-      month = xScale.invert(d3.mouse(this)[0]);
-      index = Math.min(Math.round(month) - 1, 4);
-
-      marker.selectAll('circle')
-        .attr('cx', function (d) {
-
-          return xScale(d.values[index].month);
-        })
-        .attr('cy', function (d) {
-
-          return yScale(d.values[index].result);
-        });
-
-      marker.selectAll('text')
-        .attr('x', function (d) {
-
-          return xScale(d.values[index].month);
-        })
-        .attr('y', function (d) {
-
-          return yScale(d.values[index].result);
-        })
-        .attr('dy', function (d) {
-
-          return d.values[index].upper ? -10 : 17;
-        })
-        .text(function (d) {
-
-          return d.values[index].result + '%';
-        });
-    }
-
-    function mouseout() {
-
-      marker.attr('opacity', 0);
-      marker.selectAll('text')
-        .text('');
     }
 
     function getParty (d) {
