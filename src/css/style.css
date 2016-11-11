@@ -1,37 +1,18 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   font-family: Helvetica, Arial, sans-serif;
 }
 
-.container {
-  width: 1050px;
-}
-
-h1 {
-  font-size: 26px;
-  padding: 0px 0 5px 0;
-  line-height: 1.2em;
-  color: #000;
-  margin-bottom: 0px;
-}
-
-#lead {
-  clear: both;
-  width: 600px;
-}
-
-#lead p {
-  color: #444;
-  font-family: Georgia,Palatino,serif;
-  font-size: 1.0em;
-  line-height: 1.4em;
-}
-
 .chart {
-  float: left;
-  padding-right: 5px;
-  padding-bottom: 5px;
-  padding-top:0;
-  padding-left:0;
+  display: inline-block;
+  padding: 0 5px 5px 0;
 }
 
 svg {
@@ -40,10 +21,6 @@ svg {
 
 .background {
   fill: none;
-}
-
-.area {
-  fill: #cec6b9;
 }
 
 .line {
@@ -88,41 +65,3 @@ text.d, circle.d {
   display:none;
   opacity: 0.0;
 }
-
-#button-wrap {
-  width: 220px;
-  margin-left: auto;
-  margin-right: auto;
-  height: 40px;
-  margin-bottom: 10px;
-  padding-left: 5px;
-}
-
-.button {
-  cursor: pointer;
-  float: left;
-  width: 100px;
-  height: 30px;
-  text-align: center;
-  background: #fcfcfc;
-  border: 1px solid #cecece;
-  display: block;
-  padding-top: 5px;
-  margin-top: 10px;
-  border-radius: 5px 5px 5px 5px;
-}
-
-.button.active {
-  box-shadow: inset 0px 0px 7px rgba(0,0,0,0.18);
-  pointer-events: none;
-  background-color: #e6e6e6;
-}
-
-#count {
-  border-radius: 5px 0px 0px 5px;
-}
-
-#name {
-  border-radius: 0px 5px 5px 0px;
-}
-
