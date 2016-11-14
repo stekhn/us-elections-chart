@@ -4,8 +4,6 @@
 
   (function init() {
 
-    var plot = draw();
-
     d3.queue()
       .defer(d3.tsv, 'data/polls.tsv')
       .await(function (error, data) {
@@ -13,9 +11,7 @@
         if (error) { throw error; }
 
         data = transform(data);
-        d3.select('#vis')
-          .datum(data)
-          .call(plot);
+        draw(data);
       });
   })();
 
@@ -50,10 +46,11 @@
     return nested;
   }
 
-  function draw() {
+  function draw(data) {
 
-    var width, height, margin, marker,
-      xScale, yScale, yAxis, line;
+    var width, height, margin,
+      vis, marker, xScale, yScale, yAxis, line,
+      div, svg, group, lines, result, legend;
 
     width = 150;
     height = 120;
@@ -63,6 +60,8 @@
       bottom: 20,
       left: 40
     };
+
+    vis = d3.select('#vis');
 
     xScale = d3.scale.linear()
       .range([0, width])
@@ -86,124 +85,114 @@
       .x(function (d) { return xScale(d.month); })
       .y(function (d) { return yScale(d.result); });
 
-    function chart(selection) {
+    div = vis.selectAll('.chart')
+      .data(data);
 
-      return selection.each(function (data) {
+    div.enter()
+      .append('div')
+        .attr('class', 'chart')
+      .append('svg')
+      .append('g');
 
-        var div, svg, group, lines, result, legend;
+    svg = div.select('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom);
 
-        div = d3.select(this).selectAll('.chart')
-          .data(data);
+    group = svg.select('g')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-        div.enter()
-          .append('div')
-            .attr('class', 'chart')
-          .append('svg')
-          .append('g');
+    group.append('rect')
+      .attr('class', 'background')
+      .style('pointer-events', 'all')
+      .attr('width', width + margin.right)
+      .attr('height', height);
 
-        svg = div.select('svg')
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom);
+    group.append('text')
+      .attr('class', 'year')
+      .attr('text-anchor', 'middle')
+      .attr('y', height)
+      .attr('dy', margin.bottom / 2)
+      .attr('x', width / 2)
+      .attr('font-weight', 'bold')
+      .text(function (d) { return d.key; });
 
-        group = svg.select('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    group.append('g')
+      .attr('class', 'y axis')
+      .call(yAxis);
 
-        group.append('rect')
-          .attr('class', 'background')
-          .style('pointer-events', 'all')
-          .attr('width', width + margin.right)
-          .attr('height', height);
+    lines = group.selectAll('.line')
+      .style('pointer-events', 'none')
+      .data(function (d) { return d.values; })
+      .enter()
+      .append('g')
+        .attr('class', 'line');
 
-        group.append('text')
-          .attr('class', 'year')
-          .attr('text-anchor', 'middle')
-          .attr('y', height)
-          .attr('dy', margin.bottom / 2)
-          .attr('x', width / 2)
-          .attr('font-weight', 'bold')
-          .text(function (d) { return d.key; });
+    lines.append('path')
+      .style('pointer-events', 'none')
+      .attr('class', getParty)
+      .attr('d', function (d) { return line(d.values); });
 
-        group.append('g')
-          .attr('class', 'y axis')
-          .call(yAxis);
+    result = lines.append('g')
+      .classed('result', true);
 
-        lines = group.selectAll('.line')
-          .style('pointer-events', 'none')
-          .data(function (d) { return d.values; })
-          .enter()
-          .append('g')
-            .attr('class', 'line');
+    result.append('circle')
+      .style('pointer-events', 'none')
+      .attr('class', getParty)
+      .attr('cx', function (d) { return xScale(d.values[4].month); })
+      .attr('cy', function (d) { return yScale(d.values[4].result); })
+      .attr('r', 3.5);
 
-        lines.append('path')
-          .style('pointer-events', 'none')
-          .attr('class', getParty)
-          .attr('d', function (d) { return line(d.values); });
+    result.append('text')
+      .style('pointer-events', 'none')
+      .attr('class', getParty)
+      .attr('text-anchor', 'end')
+      .attr('font-weight', 'bold')
+      .attr('x', function (d) { return xScale(d.values[4].month); })
+      .attr('y', function (d) { return yScale(d.values[4].result); })
+      .attr('dx', 5)
+      .attr('dy', function (d, i) {
+        return i ? 17 : -10;
+      })
+      .text(function (d) {
 
-        result = lines.append('g')
-          .classed('result', true);
-
-        result.append('circle')
-          .style('pointer-events', 'none')
-          .attr('class', getParty)
-          .attr('cx', function (d) { return xScale(d.values[4].month); })
-          .attr('cy', function (d) { return yScale(d.values[4].result); })
-          .attr('r', 3.5);
-
-        result.append('text')
-          .style('pointer-events', 'none')
-          .attr('class', getParty)
-          .attr('text-anchor', 'end')
-          .attr('font-weight', 'bold')
-          .attr('x', function (d) { return xScale(d.values[4].month); })
-          .attr('y', function (d) { return yScale(d.values[4].result); })
-          .attr('dx', 5)
-          .attr('dy', function (d, i) {
-            return i ? 17 : -10;
-          })
-          .text(function (d) {
-
-            var delta = d.values[4].result - d.values[3].result;
-            if (delta > 0) { delta = '+' + delta; }
-            return delta + '%';
-          });
-
-        legend = lines.append('g')
-          .attr('class', 'legend');
-
-        legend.append('text')
-          .attr('class', getParty)
-          .attr('x', 5)
-          .attr('dy', 5)
-          .attr('y', function (d, i) { return i * 14; })
-          .text(function (d, i) { return d.key + (i ? '' : ' ★' ); });
-
-        marker = lines.append('g')
-          .classed('marker', true);
-
-        marker.append('circle')
-          .style('pointer-events', 'none')
-          .attr('class', getParty)
-          .attr('r', 2.2)
-          .attr('cx', function (d) { return xScale(d.values[3].month); })
-          .attr('cy', function (d) { return yScale(d.values[3].result); });
-
-        marker.append('text')
-          .style('pointer-events', 'none')
-          .attr('class', getParty)
-          .attr('text-anchor', 'middle')
-          .attr('font-weight', 'bold')
-          .attr('x', function (d) { return xScale(d.values[3].month); })
-          .attr('y', function (d) { return yScale(d.values[3].result); })
-          .attr('dy', function (d) { return d.values[3].upper ? -10 : 17; })
-          .text(function (d) { return d.values[3].result + '%'; });
+        var delta = d.values[4].result - d.values[3].result;
+        if (delta > 0) { delta = '+' + delta; }
+        return delta + '%';
       });
-    }
 
-    function getParty (d) {
+    legend = lines.append('g')
+      .attr('class', 'legend');
 
-      return d.values[0].party.toLowerCase();
-    }
+    legend.append('text')
+      .attr('class', getParty)
+      .attr('x', 5)
+      .attr('dy', 5)
+      .attr('y', function (d, i) { return i * 14; })
+      .text(function (d, i) { return d.key + (i ? '' : ' ★' ); });
 
-    return chart;
+    marker = lines.append('g')
+      .classed('marker', true);
+
+    marker.append('circle')
+      .style('pointer-events', 'none')
+      .attr('class', getParty)
+      .attr('r', 2.2)
+      .attr('cx', function (d) { return xScale(d.values[3].month); })
+      .attr('cy', function (d) { return yScale(d.values[3].result); });
+
+    marker.append('text')
+      .style('pointer-events', 'none')
+      .attr('class', getParty)
+      .attr('text-anchor', 'middle')
+      .attr('font-weight', 'bold')
+      .attr('x', function (d) { return xScale(d.values[3].month); })
+      .attr('y', function (d) { return yScale(d.values[3].result); })
+      .attr('dy', function (d) { return d.values[3].upper ? -10 : 17; })
+      .text(function (d) { return d.values[3].result + '%'; });
+  }
+
+  function getParty(d) {
+
+    return d.values[0].party.toLowerCase();
   }
 })();

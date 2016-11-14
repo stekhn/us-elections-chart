@@ -34,6 +34,10 @@ header .d {
   color: #3579a8;
 }
 
+footer a {
+  color: #000;
+}
+
 .chart {
   display: inline-block;
   padding: 0 10px 10px 0;
